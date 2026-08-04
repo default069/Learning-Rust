@@ -1,43 +1,44 @@
+#[allow(unused_imports)]
 use std::io;
-use std::env;
 use std::fs;
-use std path::{Path,PathBuf}
+use std::path::{PathBuf};
 
 fn main(){
     let significance = input("please writing command: ");
-
-    if significance == "ls"{
-
-    }else if significance = "cd"{
-
-    } else if significance = "mkdir"{
-
-    }else if significance = "touch"{
-
+    
+    if significance == "ls" {
+        command_ls(&significance);
     }else{
-        println!("Sorry, there's no such command ")
+        println!("Sorry, there's no such command ");
     }
-}
 
-fn input(promt ,&str){
+}
+fn input(prompt: &str)-> String{
     if !prompt.is_empty(){
-        println!("{}",prompt)
+        println!("{}",prompt);
     }
     let mut input_Command = String::new();
-    io::stdin().read_line(&mut input_Command).expect("error")
+    io::stdin().read_line(&mut input_Command).expect("error");
 
-    inputCommand.trim().parse::<str>.expect("please write correct command")
+    input_Command.trim().to_string()
 }
-
-fn commad_ls(ls_promt){
-
-}
-fn commad_ls(cd_promt){
-    
-}
-fn commad_ls(mkdir_promt){
-    
-}
-fn commad_ls(touch_promt){
-    
+//I'm starting to write the first code for a Bash prototype
+fn command_ls(_ls_prompt: &str){
+    let mut path_ls = PathBuf::new();
+    path_ls.push("/");
+// A function to view the elements in a file 
+    match fs::read_dir(path_ls){
+        Ok(entries) => {
+            for entry in entries {
+                if let Ok(item) = entry{
+                    if let Some(name) = item.file_name().to_str(){
+                        println!("{}", name)
+                    }
+                }
+            }
+        }
+        Err(e) => {
+                println!("Error reading the directory: {}", e);
+            }
+    }
 }
