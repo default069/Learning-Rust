@@ -3,6 +3,7 @@
 use std::io;
 use std::fs;
 use std::env;
+use std::fs::File;
 use std::path::{PathBuf};
 
 fn main(){
@@ -28,6 +29,9 @@ loop{
         }
         "mkdir"=>{
             command_mkdir(argument)
+        }
+        "touch"=>{
+            command_touch(argument)
         }
         "exit" => {
             println!("stop terminal");
@@ -97,6 +101,15 @@ fn command_mkdir(_mkdir_prompt: &str){
     
     match fs::create_dir(&path_mkdir){
         Ok(_)=> println!("folder succes create {}!", path_mkdir.display()),
+        Err(e)=> println!("Error{}",e),
+    }
+}
+fn command_touch(_touch_prompt: &str){
+    let mut path_touch = PathBuf::new();
+    path_touch.push(&_touch_prompt);
+    
+    match File::create(&path_touch){
+        Ok(_)=> println!("folder succes create {}!", path_touch.display()),
         Err(e)=> println!("Error{}",e),
     }
 }
