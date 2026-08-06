@@ -21,10 +21,13 @@ loop{
 
     match command {
         "ls" => {
-            command_ls("argument");
+            command_ls(argument);
         }
         "cd" => {
-            command_cd("argument");
+            command_cd(argument);
+        }
+        "mkdir"=>{
+            command_mkdir(argument)
         }
         "exit" => {
             println!("stop terminal");
@@ -74,9 +77,8 @@ fn command_cd(_cd_prompt: &str){
     let mut path_cd = PathBuf::new();
     path_cd.push(&_cd_prompt);
     if !path_cd.exists() {
-        // Создаем папку и обрабатываем возможную ошибку при создании
         if let Err(e) = fs::create_dir_all(&path_cd) {
-            println!("Не удалось создать директорию: {}", e);
+            println!("Failed to create the directory: {}", e);
             return;
         }
     }
@@ -87,5 +89,14 @@ fn command_cd(_cd_prompt: &str){
         Err(e)=>{
             println!("cd error:{}",e)
         }
+    }   
+}
+fn command_mkdir(_mkdir_prompt: &str){
+    let mut path_mkdir = PathBuf::new();
+    path_mkdir.push(&_mkdir_prompt);
+    
+    match fs::create_dir(&path_mkdir){
+        Ok(_)=> println!("folder succes create {}!", path_mkdir.display()),
+        Err(e)=> println!("Error{}",e),
     }
 }
